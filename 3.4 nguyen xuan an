@@ -1,0 +1,233 @@
+using System;
+
+class Program
+{
+    // ================= BÀI 3.1: CALCULATOR =================
+    static void Calculator()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== MÁY TÍNH CALCULATOR ===");
+
+        Console.Write("Nhập a: ");
+        double a = double.Parse(Console.ReadLine()!);
+
+        Console.Write("Nhập b: ");
+        double b = double.Parse(Console.ReadLine()!);
+
+        Console.Write("Nhập phép toán (+, -, *, /, %): ");
+        char op = char.Parse(Console.ReadLine()!);
+
+        string result = op switch
+        {
+            '+' => $"{a + b:F2}",
+            '-' => $"{a - b:F2}",
+            '*' => $"{a * b:F2}",
+            '/' when b == 0 => "Lỗi: Không thể chia cho 0!",
+            '%' when b == 0 => "Lỗi: Không thể chia cho 0!",
+            '/' => $"{a / b:F2}",
+            '%' => $"{a % b:F2}",
+            _ => "Lỗi: Phép toán không hợp lệ!"
+        };
+
+        Console.WriteLine($"Kết quả: {result}");
+
+        Console.WriteLine("\nNhấn phím bất kỳ để quay lại Menu...");
+        Console.ReadKey();
+    }
+
+
+    // ================= BÀI 3.2: PHƯƠNG TRÌNH BẬC 2 =================
+    static void QuadraticEquation()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== GIẢI PHƯƠNG TRÌNH BẬC 2 ===");
+
+        Console.Write("Nhập a: ");
+        double a = double.Parse(Console.ReadLine()!);
+
+        Console.Write("Nhập b: ");
+        double b = double.Parse(Console.ReadLine()!);
+
+        Console.Write("Nhập c: ");
+        double c = double.Parse(Console.ReadLine()!);
+
+        if (a == 0)
+        {
+            if (b == 0)
+            {
+                if (c == 0)
+                    Console.WriteLine("Phương trình có vô số nghiệm.");
+                else
+                    Console.WriteLine("Phương trình vô nghiệm.");
+            }
+            else
+            {
+                double x = -c / b;
+                Console.WriteLine($"Phương trình có một nghiệm: x = {x:F2}");
+            }
+        }
+        else
+        {
+            double delta = b * b - 4 * a * c;
+
+            if (delta > 0)
+            {
+                double x1 = (-b + Math.Sqrt(delta)) / (2 * a);
+                double x2 = (-b - Math.Sqrt(delta)) / (2 * a);
+
+                Console.WriteLine($"x1 = {x1:F2}");
+                Console.WriteLine($"x2 = {x2:F2}");
+            }
+            else if (delta == 0)
+            {
+                double x = -b / (2 * a);
+
+                Console.WriteLine($"Nghiệm kép: x = {x:F2}");
+            }
+            else
+            {
+                Console.WriteLine("Phương trình vô nghiệm.");
+            }
+        }
+
+        Console.WriteLine("\nNhấn phím bất kỳ để quay lại Menu...");
+        Console.ReadKey();
+    }
+
+
+    // ================= BÀI 3.3: NGUYÊN TỐ, HOÀN HẢO, FIBONACCI =================
+    static bool IsPrime(int n)
+    {
+        if (n < 2)
+            return false;
+
+        for (int i = 2; i * i <= n; i++)
+        {
+            if (n % i == 0)
+                return false;
+        }
+
+        return true;
+    }
+
+    static bool IsPerfectNumber(int n)
+    {
+        if (n <= 1)
+            return false;
+
+        int sum = 1;
+        int i = 2;
+
+        while (i * i <= n)
+        {
+            if (n % i == 0)
+            {
+                sum += i;
+
+                if (i != n / i)
+                    sum += n / i;
+            }
+
+            i++;
+        }
+
+        return sum == n;
+    }
+
+    static void NumberCheck()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== SỐ NGUYÊN TỐ, SỐ HOÀN HẢO & FIBONACCI ===");
+
+        Console.Write("Nhập số nguyên dương N: ");
+        int n = int.Parse(Console.ReadLine()!);
+
+        // Kiểm tra số hoàn hảo
+        if (IsPerfectNumber(n))
+            Console.WriteLine($"{n} là số hoàn hảo.");
+        else
+            Console.WriteLine($"{n} không phải là số hoàn hảo.");
+
+        // Kiểm tra số nguyên tố
+        if (IsPrime(n))
+            Console.WriteLine($"{n} là số nguyên tố.");
+        else
+            Console.WriteLine($"{n} không phải là số nguyên tố.");
+
+        // Fibonacci
+        Console.Write($"Dãy Fibonacci {n} số: ");
+
+        int a = 0;
+        int b = 1;
+
+        for (int i = 0; i < n; i++)
+        {
+            Console.Write(a);
+
+            if (i < n - 1)
+                Console.Write(", ");
+
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+
+        Console.WriteLine();
+
+        Console.WriteLine("\nNhấn phím bất kỳ để quay lại Menu...");
+        Console.ReadKey();
+    }
+
+
+    // ================= MENU CHÍNH =================
+    static void Main()
+    {
+        int choice;
+
+        do
+        {
+            Console.Clear();
+
+            Console.WriteLine("====================================");
+            Console.WriteLine("          MENU CHƯƠNG TRÌNH");
+            Console.WriteLine("====================================");
+            Console.WriteLine("1. Chạy Bài tập 1 (Calculator)");
+            Console.WriteLine("2. Chạy Bài tập 2 (Phương trình bậc 2)");
+            Console.WriteLine("3. Chạy Bài tập 3 (Số nguyên tố & Fibonacci)");
+            Console.WriteLine("0. Thoát chương trình");
+            Console.WriteLine("====================================");
+
+            Console.Write("Nhập lựa chọn: ");
+            choice = int.Parse(Console.ReadLine()!);
+
+            switch (choice)
+            {
+                case 1:
+                    Calculator();
+                    break;
+
+                case 2:
+                    QuadraticEquation();
+                    break;
+
+                case 3:
+                    NumberCheck();
+                    break;
+
+                case 0:
+                    Console.WriteLine("Đã thoát chương trình.");
+                    break;
+
+                default:
+                    Console.WriteLine("Lựa chọn không hợp lệ!");
+                    Console.WriteLine("Nhấn phím bất kỳ để tiếp tục...");
+                    Console.ReadKey();
+                    break;
+            }
+
+        } while (choice != 0);
+    }
+}
