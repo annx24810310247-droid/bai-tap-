@@ -1,0 +1,39 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Nhập a: ");
+        double a = double.Parse(Console.ReadLine()!);
+
+        Console.Write("Nhập b: ");
+        double b = double.Parse(Console.ReadLine()!);
+
+        Console.Write("Nhập phép toán (+, -, *, /, %): ");
+        char op = char.Parse(Console.ReadLine()!);
+
+        string result;
+
+        try
+        {
+            result = op switch
+            {
+                '+' => $"{a + b:F2}",
+                '-' => $"{a - b:F2}",
+                '*' => $"{a * b:F2}",
+                '/' when b == 0 => "Lỗi: Không thể chia cho 0!",
+                '%' when b == 0 => "Lỗi: Không thể chia cho 0!",
+                '/' => $"{a / b:F2}",
+                '%' => $"{a % b:F2}",
+                _ => "Lỗi: Phép toán không hợp lệ!"
+            };
+        }
+        catch (Exception ex)
+        {
+            result = $"Lỗi: {ex.Message}";
+        }
+
+        Console.WriteLine($"Kết quả: {result}");
+    }
+}
