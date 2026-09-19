@@ -1,0 +1,148 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Ngay {
+    int ngay;
+    int thang;
+    int nam;
+};
+
+struct HangHoa {
+    string maHang;
+    string tenHang;
+    Ngay ngayXuat;
+    float giaXuat;
+};
+
+
+void Nhap(HangHoa a[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhap hang hoa thu " << i + 1 << ":\n";
+
+        cout << "Ma hang hoa: ";
+        cin >> a[i].maHang;
+
+        cout << "Ten hang hoa: ";
+        cin.ignore();
+        getline(cin, a[i].tenHang);
+
+        cout << "Ngay xuat: ";
+        cin >> a[i].ngayXuat.ngay;
+
+        cout << "Thang xuat: ";
+        cin >> a[i].ngayXuat.thang;
+
+        cout << "Nam xuat: ";
+        cin >> a[i].ngayXuat.nam;
+
+        cout << "Gia xuat hang (trieu dong): ";
+        cin >> a[i].giaXuat;
+    }
+}
+
+
+void Xuat(HangHoa a[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << "\nHang hoa thu " << i + 1 << ":";
+        cout << "\nMa hang: " << a[i].maHang;
+        cout << "\nTen hang: " << a[i].tenHang;
+
+        cout << "\nNgay xuat: "
+             << a[i].ngayXuat.ngay << "/"
+             << a[i].ngayXuat.thang << "/"
+             << a[i].ngayXuat.nam;
+
+        cout << "\nGia xuat: "
+             << a[i].giaXuat << " trieu dong\n";
+    }
+}
+
+
+void SelectionSort(HangHoa a[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+
+        int min = i;
+
+        for (int j = i + 1; j < n; j++) {
+            if (a[j].giaXuat < a[min].giaXuat) {
+                min = j;
+            }
+        }
+
+        HangHoa temp = a[i];
+        a[i] = a[min];
+        a[min] = temp;
+    }
+}
+
+
+void TimKiemNhiPhan(HangHoa a[], int n, float X) {
+
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+
+        int mid = (left + right) / 2;
+
+        if (a[mid].giaXuat == X) {
+
+            cout << "\nTim thay hang hoa co gia " << X
+                 << " trieu dong:\n";
+
+            cout << "\nMa hang: " << a[mid].maHang;
+            cout << "\nTen hang: " << a[mid].tenHang;
+
+            cout << "\nNgay xuat: "
+                 << a[mid].ngayXuat.ngay << "/"
+                 << a[mid].ngayXuat.thang << "/"
+                 << a[mid].ngayXuat.nam;
+
+            cout << "\nGia xuat: "
+                 << a[mid].giaXuat << " trieu dong\n";
+
+            return;
+        }
+
+        if (a[mid].giaXuat < X) {
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
+    }
+
+    cout << "\nKhong tim thay hang hoa co gia "
+         << X << " trieu dong.\n";
+}
+
+
+
+int main() {
+
+    HangHoa a[100];
+    int n;
+
+    cout << "Nhap so luong hang hoa: ";
+    cin >> n;
+
+    Nhap(a, n);
+
+    cout << "\n\n===== DANH SACH HANG HOA VUA NHAP =====";
+    Xuat(a, n);
+
+    SelectionSort(a, n);
+
+    cout << "\n\n===== DANH SACH SAU KHI SAP XEP =====";
+    Xuat(a, n);
+
+    float X;
+
+    cout << "\n\nNhap gia X can tim: ";
+    cin >> X;
+
+    TimKiemNhiPhan(a, n, X);
+
+    return 0;
+}
