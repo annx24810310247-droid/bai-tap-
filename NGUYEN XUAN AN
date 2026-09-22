@@ -1,0 +1,143 @@
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct SinhVien {
+    int maSV;
+    char tenSV[50];
+    char lop[20];
+    float tongKet;
+    char hanhKiem[20];
+};
+
+struct Node {
+    SinhVien data;
+    Node *left;
+    Node *right;
+};
+
+void khoiTao(Node *&root) {
+    root = NULL;
+}
+
+Node *taoNode(SinhVien sv) {
+    Node *p = new Node;
+    p->data = sv;
+    p->left = NULL;
+    p->right = NULL;
+    return p;
+}
+
+void chenNode(Node *&root, SinhVien sv) {
+    if (root == NULL) {
+        root = taoNode(sv);
+    }
+    else if (sv.maSV < root->data.maSV) {
+        chenNode(root->left, sv);
+    }
+    else if (sv.maSV > root->data.maSV) {
+        chenNode(root->right, sv);
+    }
+}
+
+SinhVien nhapSV() {
+    SinhVien sv;
+
+    printf("Ma sinh vien: ");
+    scanf("%d", &sv.maSV);
+    getchar();
+
+    printf("Ten sinh vien: ");
+    fgets(sv.tenSV, sizeof(sv.tenSV), stdin);
+    sv.tenSV[strcspn(sv.tenSV, "\n")] = '\0';
+
+    printf("Lop: ");
+    fgets(sv.lop, sizeof(sv.lop), stdin);
+    sv.lop[strcspn(sv.lop, "\n")] = '\0';
+
+    printf("Tong ket: ");
+    scanf("%f", &sv.tongKet);
+    getchar();
+
+    printf("Hanh kiem: ");
+    fgets(sv.hanhKiem, sizeof(sv.hanhKiem), stdin);
+    sv.hanhKiem[strcspn(sv.hanhKiem, "\n")] = '\0';
+
+    return sv;
+}
+
+Node *timKiem(Node *root, int maSV) {
+    if (root == NULL)
+        return NULL;
+
+    if (maSV == root->data.maSV)
+        return root;
+
+    if (maSV < root->data.maSV)
+        return timKiem(root->left, maSV);
+
+    return timKiem(root->right, maSV);
+}
+
+void duyetCay(Node *root) {
+    if (root != NULL) {
+        duyetCay(root->left);
+
+        printf("%-10d %-25s %-15s %-10.2f %-15s\n",
+               root->data.maSV,
+               root->data.tenSV,
+               root->data.lop,
+               root->data.tongKet,
+               root->data.hanhKiem);
+
+        duyetCay(root->right);
+    }
+}
+
+void hienThiSV(Node *p) {
+    printf("\nMa sinh vien: %d", p->data.maSV);
+    printf("\nTen sinh vien: %s", p->data.tenSV);
+    printf("\nLop: %s", p->data.lop);
+    printf("\nTong ket: %.2f", p->data.tongKet);
+    printf("\nHanh kiem: %s\n", p->data.hanhKiem);
+}
+
+int main() {
+    Node *root;
+    int n, ma;
+
+    khoiTao(root);
+
+    printf("Nhap so sinh vien: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        printf("\n--- Nhap sinh vien thu %d ---\n", i + 1);
+
+        SinhVien sv = nhapSV();
+        chenNode(root, sv);
+    }
+
+    printf("\n========== DANH SACH SINH VIEN ==========\n");
+    printf("%-10s %-25s %-15s %-10s %-15s\n",
+           "Ma SV", "Ten SV", "Lop", "Tong ket", "Hanh kiem");
+
+    duyetCay(root);
+
+    printf("\nNhap ma sinh vien can tim: ");
+    scanf("%d", &ma);
+
+    Node *p = timKiem(root, ma);
+
+    if (p != NULL) {
+        printf("\n=== THONG TIN SINH VIEN TIM THAY ===\n");
+        hienThiSV(p);
+    }
+    else {
+        printf("\nKhong co sinh vien trong cay!\n");
+    }
+
+    return 0;
+}
+```
